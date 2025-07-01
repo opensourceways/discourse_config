@@ -2,8 +2,8 @@
 # TODO: change SOME_SECRET in this template
 
 templates:
-  - "templates/redis.template.yml"
-  - "templates/postgres.template.yml"
+  # - "templates/redis.template.yml"
+  # - "templates/postgres.template.yml"
   - "templates/web.template.yml"
   - "templates/web.ratelimited.template.yml"
 ## Uncomment these two lines if you wish to add Lets Encrypt (https)
@@ -38,12 +38,12 @@ env:
 
   ## How many concurrent web requests are supported? Depends on memory and CPU cores.
   ## will be set automatically by bootstrap based on detected CPUs, or you can override
-  # UNICORN_WORKERS:
-  # UNICORN_SIDEKIQS:
-  # UNICORN_SIDEKIQ_MAX_RSS:
+  UNICORN_WORKERS: 2
+  UNICORN_SIDEKIQS: 2
+  UNICORN_SIDEKIQ_MAX_RSS: 1000
   
   ## TODO: The domain name this Discourse instance will respond to
-  DISCOURSE_HOSTNAME:
+  DISCOURSE_HOSTNAME: discourse.test.osinfra.cn
 
   ## MaxMind license key
   DISCOURSE_MAXMIND_LICENSE_KEY:
