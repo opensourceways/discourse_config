@@ -5,8 +5,9 @@
 
 # 参数校验
 if [ $# -ne 8 ]; then
-  echo "错误: 需要8个参数"
-  echo "用法: $0 <workspace> <discourse_base_image> <maxmind_key> <postgre_user> <postgre_pass> <github_user> <github_pass>  <developer_emails>"
+  echo "错误: 需要8个参数, 但提供了 $# 个参数"
+  echo "输入参数: $@"
+  echo "用法: $0 <workspace> <discourse_base_image> <maxmind_key> <postgre_user> <postgre_pass> <github_user> <github_pass> <developer_emails>"
   exit 1
 fi
 
