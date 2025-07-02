@@ -132,9 +132,15 @@ run:
         - bash -c "touch -a /shared/log/rails/{sidekiq,puma.err,puma}.log"
         - bash -c "ln -sf /shared/log/rails/{sidekiq,puma.err,puma}.log log/"
         - sed -i 's/default \$scheme;/default https;/' /etc/nginx/conf.d/discourse.conf
+
    - replace:
-      filename: "/etc/nginx/conf.d/discourse.conf"
-      from: /listen\s+80;/
-      to: "listen 8080;"
+      filename: "/etc/nginx/sites-available/default"
+      from: /listen 80 default_server;/
+      to: listen 8080 default_server;
+  
+   - replace:
+      filename: "/etc/nginx/sites-available/default"
+      from: /listen [::]:80 default_server;/
+      to: listen [::]:8080 default_server;
   # - exec: echo "End of custom commands"
   # - exec: awk -F\# '{print $1;}' ~/.ssh/authorized_keys | awk 'BEGIN { print "Authorized SSH keys for this container:"; } NF>=2 {print $NF;}'
