@@ -141,6 +141,6 @@ run:
    - replace:
       filename: "/etc/nginx/conf.d/outlets/server/10-http.conf"
       from: /listen \[::\]:80;/
-      to: listen \[::\]:8080;
+      to: listen [::]:8080;
   # - exec: echo "End of custom commands"
   # - exec: awk -F\# '{print $1;}' ~/.ssh/authorized_keys | awk 'BEGIN { print "Authorized SSH keys for this container:"; } NF>=2 {print $NF;}'
