@@ -4,10 +4,11 @@
 
 
 # 参数校验
-if [ $# -ne 8 ]; then
-  echo "错误: 需要8个参数, 但提供了 $# 个参数"
+if [ $# -ne 9 ]; then
+  echo "错误: 需要9个参数, 但提供了 $# 个参数"
   echo "输入参数: $@"
-  echo "用法: $0 <workspace> <discourse_base_image> <maxmind_key> <postgre_user> <postgre_pass> <github_user> <github_pass> <developer_emails>"
+  echo "用法: $0 <workspace> <discourse_base_image> <maxmind_key> <postgre_user> " \
+       "<postgre_pass> <github_user> <github_pass> <developer_emails> <redis_password>"
   exit 1
 fi
 
@@ -20,6 +21,7 @@ POSTGRE_PASSWORD="$5"
 DISCOURSE_GITHUB_USER="${6}"
 DISCOURSE_GITHUB_PASS="${7}"
 DEVELOPER_EMAILS="${8}"
+REDIS_PASSWORD="${9}"
 
 # 进入工作目录
 cd "$WORKSPACE" || exit 1
@@ -41,8 +43,10 @@ sed -i "s|DISCOURSE_MAXMIND_LICENSE_KEY:.*|DISCOURSE_MAXMIND_LICENSE_KEY: $MAXMI
 sed -i "s|DISCOURSE_DEVELOPER_EMAILS:.*|DISCOURSE_DEVELOPER_EMAILS: $DEVELOPER_EMAILS|" ./web_only.yml
 sed -i "s|DISCOURSE_DB_USERNAME:.*|DISCOURSE_DB_USERNAME: $POSTGRE_USER|" ./web_only.yml
 sed -i "s|DISCOURSE_DB_PASSWORD:.*|DISCOURSE_DB_PASSWORD: $POSTGRE_PASSWORD|" ./web_only.yml
+sed -i "s|DISCOURSE_REDIS_PASSWORD:.*|DISCOURSE_REDIS_PASSWORD: $REDIS_PASSWORD|" ./web_only.yml
+# pg 和 redis 的主机IP是内部网络地址
 sed -i "s|DISCOURSE_DB_HOST:.*|DISCOURSE_DB_HOST: 192.168.1.38|" ./web_only.yml
-sed -i "s|DISCOURSE_REDIS_HOST:.*|DISCOURSE_REDIS_HOST: 192.168.1.166|" ./web_only.yml
+sed -i "s|DISCOURSE_REDIS_HOST:.*|DISCOURSE_REDIS_HOST: 192.168.1.37|" ./web_only.yml
 sed -i "s|GIT_USERNAME|$DISCOURSE_GITHUB_USER|" ./web_only.yml
 sed -i "s|GIT_PASSWORD|$DISCOURSE_GITHUB_PASS|" ./web_only.yml
 
