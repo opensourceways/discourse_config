@@ -196,8 +196,3 @@ run:
         ssl_session_cache shared:SSL:1m;
 
         add_header Strict-Transport-Security 'max-age=31536000';
-
-        if ($http_host != $$ENV_DISCOURSE_HOSTNAME) {
-          rewrite (.*) https://$$ENV_DISCOURSE_HOSTNAME$1 permanent;
-        }
-
