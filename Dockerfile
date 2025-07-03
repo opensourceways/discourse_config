@@ -41,6 +41,9 @@ RUN chown -R discourse:www-data /etc/runit/1.d && \
 #     passwd -| discourse && \
 #     usermod -s /sbin/nologin sync
 
+WORKDIR /home/discourse
+COPY ./discourse_config/rails .
+
 # 切换到非root用户
 USER discourse
 
