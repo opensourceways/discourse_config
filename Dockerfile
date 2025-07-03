@@ -29,16 +29,16 @@ RUN chown -R discourse:www-data /etc/runit/1.d && \
     chown -R discourse:www-data /var/spool
 
 # 具体修改的是什么内容？
-RUN sed -i "s|root|discourse|g" /etc/rsyslog.conf && \
-    sed -i "s|adm|www-data|g" /etc/rsyslog.conf && \
-    sed -i '2i cd /var/www/discourse' /etc/service/unicorn/run && \
-    sed -i "s|www-data|discourse|g" /etc/nginx/nginx.conf && \
-    echo "umask 0027" >> /etc/bashrc && \
-    echo "set +o history" >> /etc/bashrc && \
-    sed -i "s|HISTSIZE=1000|HISTSIZE=0|" /etc/profile && \
-    chage --maxdays 30 discourse && \
-    passwd -| discourse && \
-    usermod -s /sbin/nologin sync
+# RUN sed -i "s|root|discourse|g" /etc/rsyslog.conf && \
+#     sed -i "s|adm|www-data|g" /etc/rsyslog.conf && \
+#     sed -i '2i cd /var/www/discourse' /etc/service/unicorn/run && \
+#     sed -i "s|www-data|discourse|g" /etc/nginx/nginx.conf && \
+#     echo "umask 0027" >> /etc/bashrc && \
+#     echo "set +o history" >> /etc/bashrc && \
+#     sed -i "s|HISTSIZE=1000|HISTSIZE=0|" /etc/profile && \
+#     chage --maxdays 30 discourse && \
+#     passwd -| discourse && \
+#     usermod -s /sbin/nologin sync
 
 # 切换到非root用户
 USER discourse

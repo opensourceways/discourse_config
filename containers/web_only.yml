@@ -116,54 +116,6 @@ hooks:
 
 ## Remember, this is YAML syntax - you can only have one block with a name
 run:
-  # - exec: echo "Beginning of custom commands"
-
-  ## If you want to configure password login for root, uncomment and change:
-  ## Use only one of the following lines:
-  #- exec: /usr/sbin/usermod -p 'PASSWORD_HASH' root
-  #- exec: /usr/sbin/usermod -p "$(mkpasswd -m sha-256 'RAW_PASSWORD')" root
-
-  ## If you want to authorized additional users, uncomment and change:
-  #- exec: ssh-import-id username
-  #- exec: ssh-import-id anotherusername
-  # - exec: echo "End of custom commands"
-  # - exec: awk -F\# '{print $1;}' ~/.ssh/authorized_keys | awk 'BEGIN { print "Authorized SSH keys for this container:"; } NF>=2 {print $NF;}'
-  # - file:
-  #     path: "/etc/nginx/conf.d/outlets/server/10-http.conf"
-  #     contents: ""
-  # - file:
-  #     hook: ssl
-  #     path: "/etc/nginx/conf.d/outlets/server/20-https.conf"
-  #     contents: |
-  #       listen 8080 ssl;
-  #       http2 on;
-
-  #       ssl_protocols TLSv1.2 TLSv1.3;
-  #       ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
-  #       ssl_prefer_server_ciphers off;
-
-  #       ssl_certificate /etc/nginx/certs/discourse.crt;
-  #       ssl_certificate_key /etc/nginx/certs/discourse.key;
-
-  #       ssl_session_tickets off;
-  #       ssl_session_timeout 1d;
-  #       ssl_session_cache shared:SSL:1m;
-
-  #       add_header Strict-Transport-Security 'max-age=31536000';
-
-  #       if ($http_host != $$ENV_DISCOURSE_HOSTNAME) {
-  #         rewrite (.*) https://$$ENV_DISCOURSE_HOSTNAME$1 permanent;
-  #       }
-  # - file:
-  #     path: "/etc/nginx/conf.d/outlets/discourse/20-https.conf"
-  #     contents: |
-  #       add_header Strict-Transport-Security 'max-age=31536000';
-  # - exec:
-  #     cmd:
-  #       - |-
-  #         if [ -f "/proc/net/if_inet6" ] ; then
-  #           sed -i 's/listen 8080 ssl;/listen 8080 ssl;\nlisten [::]:8080 ssl;/g' /etc/nginx/conf.d/outlets/server/20-https.conf
-  #         fi
   - exec:
       cd: /var/www/discourse
       cmd:
