@@ -13,7 +13,7 @@ RUN chown -R discourse:www-data /etc/runit/1.d && \
     rm -f /etc/runit/1.d/00-fix-var-logs && \
     rm -rf /etc/service/rsyslog /etc/service/cron /etc/service/anacron &&\
     mkdir -p /var/log/nginx && \
-    chown -R www-data:www-data /var/log/nginx && \
+    chown -R discourse:www-data /var/log/nginx && \
     chmod -R 755 /var/log/nginx && \
     touch /var/log/syslog   && chown -f discourse:www-data /var/log/syslog* && \
     touch /var/log/auth.log && chown -f discourse:www-data /var/log/auth.log* && \
@@ -26,7 +26,8 @@ RUN chown -R discourse:www-data /etc/runit/1.d && \
     chown -R discourse:www-data /run && \
     chown -R discourse:www-data /tmp && \
     chown -R discourse:www-data /dev && \
-    chown -R discourse:www-data /var/spool
+    chown -R discourse:www-data /var/spool && \
+    chown -R discourse:www-data /etc/ssl
 
 # 具体修改的是什么内容？
 # RUN sed -i "s|root|discourse|g" /etc/rsyslog.conf && \
