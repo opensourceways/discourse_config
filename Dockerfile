@@ -44,4 +44,4 @@ RUN sed -i "s|root|discourse|g" /etc/rsyslog.conf && \
 USER discourse
 
 # 保留原有的ENTRYPOINT和CMD
-ENTRYPOINT ["rails db:migrate && /sbin/boot"]
+# ENTRYPOINT ["sh", "-c", "rails db:migrate && /sbin/boot"]
