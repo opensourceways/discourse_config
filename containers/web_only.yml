@@ -171,3 +171,17 @@ run:
         - bash -c "touch -a /shared/log/rails/{sidekiq,puma.err,puma}.log"
         - bash -c "ln -sf /shared/log/rails/{sidekiq,puma.err,puma}.log log/"
         - sed -i 's/default \$scheme;/default https;/' /etc/nginx/conf.d/discourse.conf
+
+  - file:
+      path: "/etc/nginx/conf.d/outlets/before-server/20-redirect-http-to-https.conf"
+      contents: ""
+
+  - replace:
+      filename: /etc/nginx/conf.d/outlets/discourse/20-https.conf
+      from: listen 443 ssl;
+      to: listen 8080 ssl;
+
+  - replace:
+      filename: /etc/nginx/conf.d/outlets/discourse/20-https.conf
+      from: listen \[::\]:443 ssl;
+      to: listen [::]:8080 ssl;
