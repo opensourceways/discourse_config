@@ -33,8 +33,7 @@ RUN sed -i "s|www-data|discourse|g" /etc/nginx/nginx.conf
 # 修改 discourse 用户shell的umask配置和历史记录设置
 RUN echo "umask 0027" >> /home/discourse/.bashrc && \
     echo "set +o history" >> /home/discourse/.bashrc && \
-    sed -i "s|HISTSIZE=1000|HISTSIZE=0|" /home/discourse/.bashrc && \
-    source /home/discourse/.bashrc
+    sed -i "s|HISTSIZE=1000|HISTSIZE=0|" /home/discourse/.bashrc
 
 # 限制 discourse 用户的密码有效期
 RUN chage --maxdays 30 discourse && \
@@ -61,6 +60,8 @@ RUN chown -R discourse:www-data /etc/runit/1.d && \
 
 # 切换到非root用户
 USER discourse
+
+RUN source /home/discourse/.bashrc
 
 # 保留原有的ENTRYPOINT和CMD
 # ENTRYPOINT ["sh", "-c", "rails db:migrate && /sbin/boot"]
