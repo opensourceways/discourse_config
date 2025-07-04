@@ -18,6 +18,12 @@ RUN rm -f /etc/runit/1.d/00-fix-var-logs && \
 
 # 参考 /etc/service/rsyslog 脚本内容
 RUN rm -rf /etc/service/rsyslog
+RUN chmod gu+rw /var/run && \
+    chmod gu+s /usr/sbin/cron && \
+    chmod gu+s /usr/sbin/anacron && \
+    chmod gu+s /usr/bin/crontab
+# RUN rm -rf /etc/service/cron && \
+#     rm -rf /etc/runit/1.d/anacron
 
 # 参考 /etc/service/unicorn/run, 适配切普通用户的修改
 RUN mkdir -p /shared/log/rails && \
