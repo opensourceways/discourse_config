@@ -18,12 +18,9 @@ RUN rm -f /etc/runit/1.d/00-fix-var-logs && \
 
 # 参考 /etc/service/rsyslog 脚本内容
 RUN rm -rf /etc/service/rsyslog
-RUN chmod gu+rw /var/run && \
-    chmod gu+s /usr/sbin/cron && \
-    chmod gu+s /usr/sbin/anacron && \
-    chmod gu+s /usr/bin/crontab
-# RUN rm -rf /etc/service/cron && \
-#     rm -rf /etc/runit/1.d/anacron
+# 容器通过 cron， 使 cron 成为容器的 主进程（PID 1），能直接接收系统信号（如 SIGTERM）；不需要该功能
+# seteuid: Operation not permitted
+RUN rm -rf /etc/service/cron 
 
 # 参考 /etc/service/unicorn/run, 适配切普通用户的修改
 RUN mkdir -p /shared/log/rails && \
@@ -65,9 +62,9 @@ RUN chown -R discourse:discourse /etc/runit/1.d && \
     chown -R discourse:discourse /etc/ssl
 
 # 切换到非root用户
-# USER discourse
+USER discourse
 
-# RUN . /home/discourse/.bashrc
+RUN . /home/discourse/.bashrc
 
 # 保留原有的ENTRYPOINT和CMD
 # ENTRYPOINT ["sh", "-c", "rails db:migrate && /sbin/boot"]
