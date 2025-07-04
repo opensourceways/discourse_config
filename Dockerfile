@@ -65,9 +65,9 @@ RUN chown -R discourse:discourse /etc/runit/1.d && \
     chown -R discourse:discourse /etc/ssl
 
 # 切换到非root用户
-USER discourse
+# USER discourse
 
-RUN . /home/discourse/.bashrc
+# RUN . /home/discourse/.bashrc
 
 # 保留原有的ENTRYPOINT和CMD
 # ENTRYPOINT ["sh", "-c", "rails db:migrate && /sbin/boot"]
