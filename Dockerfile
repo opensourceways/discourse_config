@@ -61,7 +61,7 @@ RUN chown -R discourse:www-data /etc/runit/1.d && \
 # 切换到非root用户
 USER discourse
 
-RUN source /home/discourse/.bashrc
+RUN . /home/discourse/.bashrc
 
 # 保留原有的ENTRYPOINT和CMD
 # ENTRYPOINT ["sh", "-c", "rails db:migrate && /sbin/boot"]
