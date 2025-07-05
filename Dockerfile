@@ -61,6 +61,13 @@ RUN chown -R discourse:discourse /etc/runit/1.d && \
     chown -R discourse:discourse /var/spool && \
     chown -R discourse:discourse /etc/ssl
 
+RUN apt purge postgresql-client-15 -y && \
+    apt purge postgresql-client-common -y && \
+    apt autoremove -y && \
+    apt update && \
+    apt install postgresql-client-16 -y && \
+    pg_dump --version
+
 # 切换到非root用户
 USER discourse
 
