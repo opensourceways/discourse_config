@@ -1,4 +1,5 @@
 FROM local_discourse/web_only:latest
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # 设置目录权限
 RUN mkdir -p /shared/state/logrotate && ln -s /shared/state/logrotate /var/lib/logrotate && \
