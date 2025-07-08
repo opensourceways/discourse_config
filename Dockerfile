@@ -61,20 +61,20 @@ RUN chown -R discourse:discourse /etc/runit/1.d && \
     chown -R discourse:discourse /tmp && \
     chown -R discourse:discourse /dev && \
     chown -R discourse:discourse /var/spool && \
-    chown -R discourse:discourse /etc/ssl && \
-    chown -R discourse:discourse /etc/nginx
+    chown -R discourse:discourse /etc/ssl
 
-# 目录一律 750；对于“可写”文件设为 640，不可写文件设为 400
-RUN find /etc/nginx /var/www/discourse /shared /var/log /home/discourse -type d -exec chmod 750 {} \; && \
-    find /etc/nginx /var/www/discourse /shared /var/log /home/discourse -type f -perm /u=w -exec chmod 640 {} \; && \
-    find /etc/nginx /var/www/discourse /shared /var/log /home/discourse -type f ! -perm /u=w -exec chmod 400 {} \;
+# 处理 /etc/nginx 的所有者及权限
+RUN chown -R discourse:discourse /etc/nginx && \
+    find /etc/nginx -type d   -exec chmod 750 {} \; && \
+    find /etc/nginx -type f -perm -u=w -exec chmod 640 {} \; && \
+    find /etc/nginx -type f ! -perm -u=w -exec chmod 400 {} \;
 
-# # remove sudo
-# USER root
-# RUN apt-get update && \
-#     DEBIAN_FRONTEND=noninteractive SUDO_FORCE_REMOVE=yes apt-get purge -y sudo && \
-#     apt-get autoremove -y && \
-#     rm -rf /var/lib/apt/lists/*
+
+# remove sudo
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive SUDO_FORCE_REMOVE=yes apt-get purge -y sudo && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
 
 # 切换到非root用户
 USER discourse
