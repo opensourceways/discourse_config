@@ -67,8 +67,11 @@ RUN chown -R discourse:discourse /etc/runit/1.d && \
 RUN chown -R discourse:discourse /etc/nginx && \
     find /etc/nginx -type d   -exec chmod 750 {} \; && \
     find /etc/nginx -type f -perm -u=w -exec chmod 640 {} \; && \
-    find /etc/nginx -type f ! -perm -u=w -exec chmod 400 {} \;
-
+    find /etc/nginx -type f ! -perm -u=w -exec chmod 400 {} \; && \
+    # 修正 /var/www 及所有子目录/文件的属主属组和权限
+    chown -R discourse:www-data /var/www && \
+    find /var/www -type d -exec chmod 750 {} \; && \
+    find /var/www -type f -exec chmod 640 {} \;
 
 # remove sudo
 RUN apt-get update && \
