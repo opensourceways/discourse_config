@@ -2,9 +2,9 @@ FROM local_discourse/web_only:latest
 
 # 设置目录权限
 RUN mkdir -p /shared/state/logrotate && ln -s /shared/state/logrotate /var/lib/logrotate && \
-	mkdir -p /shared/state/anacron-spool && ln -s /shared/state/anacron-spool /var/spool/anacron && \
-	mkdir -p /shared/uploads && mkdir -p /shared/backups && \
-	rm -rf /shared/tmp/{backups,restores} && mkdir -p /shared/tmp/{backups,restores}
+    mkdir -p /shared/state/anacron-spool && ln -s /shared/state/anacron-spool /var/spool/anacron && \
+    mkdir -p /shared/uploads && mkdir -p /shared/backups && \
+    rm -rf /shared/tmp/{backups,restores} && mkdir -p /shared/tmp/{backups,restores}
 
 # 参考 00-fix-var-logs 文件修改用户权限
 RUN rm -f /etc/runit/1.d/00-fix-var-logs && \
@@ -36,7 +36,8 @@ RUN sed -i "s|user www-data;|# user discourse;|g" /etc/nginx/nginx.conf
 # 修改 discourse 用户shell的umask配置和历史记录设置
 RUN echo "umask 0027" >> /home/discourse/.bashrc && \
     echo "set +o history" >> /home/discourse/.bashrc && \
-    sed -i "s|HISTSIZE=1000|HISTSIZE=0|" /home/discourse/.bashrc
+    sed -i "s|HISTSIZE=1000|HISTSIZE=0|" /home/discourse/.bashrc && \
+    source /home/discourse/.bashrc
 
 # 限制 discourse 用户的密码有效期
 RUN chage --maxdays 30 discourse && \
@@ -60,19 +61,17 @@ RUN chown -R discourse:discourse /etc/runit/1.d && \
     chown -R discourse:discourse /dev && \
     chown -R discourse:discourse /var/spool && \
     chown -R discourse:discourse /etc/ssl && \
+    chown -R discourse:discourse /etc/nginx && \
     # remove sudo
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
     SUDO_FORCE_REMOVE=yes apt-get purge -y sudo && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
-    # 目录一律 750；对于“可写”文件设为 640，不可写文件设为 400
-    RUN find /etc /var/www/discourse /shared /var/log /home/discourse -type d \
-    -exec chmod 750 {} \; && \
-    find /etc /var/www/discourse /shared /var/log /home/discourse -type f -perm /u=w \
-    -exec chmod 640 {} \; && \
-    find /etc /var/www/discourse /shared /var/log /home/discourse -type f ! -perm /u=w \
-    -exec chmod 400 {} \;
+# 目录一律 750；对于“可写”文件设为 640，不可写文件设为 400
+RUN find /etc/nginx /var/www/discourse /shared /var/log /home/discourse -type d -exec chmod 750 {} \; && \
+    find /etc/nginx /var/www/discourse /shared /var/log /home/discourse -type f -perm /u=w -exec chmod 640 {} \; && \
+    find /etc/nginx /var/www/discourse /shared /var/log /home/discourse -type f ! -perm /u=w -exec chmod 400 {} \;
 
 # 切换到非root用户
 USER discourse
