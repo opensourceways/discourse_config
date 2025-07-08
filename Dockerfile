@@ -42,7 +42,7 @@ RUN echo "umask 0027" >> /home/discourse/.bashrc && \
 
 # 限制 discourse 用户的密码有效期
 RUN chage --maxdays 30 discourse && \
-    passwd -| discourse && \
+    passwd -l discourse && \
     usermod -s /sbin/nologin sync
 
 WORKDIR /var/www/discourse
