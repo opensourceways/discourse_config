@@ -69,12 +69,12 @@ RUN find /etc/nginx /var/www/discourse /shared /var/log /home/discourse -type d 
     find /etc/nginx /var/www/discourse /shared /var/log /home/discourse -type f -perm /u=w -exec chmod 640 {} \; && \
     find /etc/nginx /var/www/discourse /shared /var/log /home/discourse -type f ! -perm /u=w -exec chmod 400 {} \;
 
-# remove sudo
-USER root
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive SUDO_FORCE_REMOVE=yes apt-get purge -y sudo && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
+# # remove sudo
+# USER root
+# RUN apt-get update && \
+#     DEBIAN_FRONTEND=noninteractive SUDO_FORCE_REMOVE=yes apt-get purge -y sudo && \
+#     apt-get autoremove -y && \
+#     rm -rf /var/lib/apt/lists/*
 
 # 切换到非root用户
 USER discourse
