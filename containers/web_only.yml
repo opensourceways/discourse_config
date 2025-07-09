@@ -124,6 +124,13 @@ run:
         - bash -c "touch -a /shared/log/rails/{sidekiq,puma.err,puma}.log"
         - bash -c "ln -sf /shared/log/rails/{sidekiq,puma.err,puma}.log log/"
         - sed -i 's/default \$scheme;/default https;/' /etc/nginx/conf.d/discourse.conf
+  
+  - exec:
+      hook: fix_www_perms
+      cmd:
+        - chown -R discourse:www-data /var/www/discourse
+        - find /var/www/discourse -type d   -exec chmod 750 {} \;
+        - find /var/www/discourse -type f   -exec chmod 640 {} \;
 
   - file:
       path: "/etc/nginx/conf.d/outlets/before-server/20-redirect-http-to-https.conf"
