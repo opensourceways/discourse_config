@@ -67,17 +67,33 @@ RUN chown -R discourse:discourse /etc/runit/1.d && \
 RUN chown -R discourse:discourse /etc/nginx && \
     find /etc/nginx -type d   -exec chmod 750 {} \; && \
     find /etc/nginx -type f -perm -u=w -exec chmod 640 {} \; && \
-    find /etc/nginx -type f ! -perm -u=w -exec chmod 400 {} \; && \
-    # 修正 /var/www 及所有子目录/文件的属主属组和权限
-    chown -R discourse:www-data /var/www && \
-    find /var/www -type d -exec chmod 750 {} \; && \
-    find /var/www -type f -exec chmod 640 {} \;
+    find /etc/nginx -type f ! -perm -u=w -exec chmod 400 {} \; 
 
 # remove sudo
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive SUDO_FORCE_REMOVE=yes apt-get purge -y sudo && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
+
+# 卸载所有构建/调试工具
+RUN apt-get update && \
+DEBIAN_FRONTEND=noninteractive apt-get purge -y \
+  build-essential \
+  cmake \
+  gdb \
+  strace \
+  ltrace \
+  tcpdump \
+  nmap \
+  netcat-openbsd \
+  wireshark-common \
+  wireshark \
+  pkg-config \
+  libtool \
+  autoconf \
+  automake && \
+apt-get autoremove -y && \
+rm -rf /var/lib/apt/lists/*
 
 # 切换到非root用户
 USER discourse
