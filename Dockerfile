@@ -107,8 +107,6 @@ DEBIAN_FRONTEND=noninteractive apt-get purge -y \
   libtool \
   autoconf \
   automake \
-  'gcc*' \
-  'binutils*' \
   make \
   flex \
   mcpp && \
