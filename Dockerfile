@@ -63,6 +63,21 @@ RUN chown -R discourse:discourse /etc/runit/1.d && \
     chown -R discourse:discourse /var/spool && \
     chown -R discourse:discourse /etc/ssl
 
+# 降权 /var 下关键目录
+RUN chown -R discourse:discourse /var/backups /var/local /var/mail /var/nginx /var/www && \
+    find /var/backups -type d -exec chmod 750 {} \; && \
+    find /var/backups -type f -exec chmod 640 {} \; && \
+    find /var/local -type d -exec chmod 750 {} \; && \
+    find /var/local -type f -exec chmod 640 {} \; && \
+    find /var/mail -type d -exec chmod 750 {} \; && \
+    find /var/mail -type f -exec chmod 640 {} \; && \
+    find /var/nginx -type d -exec chmod 750 {} \; && \
+    find /var/nginx -type f -exec chmod 640 {} \; && \
+    find /var/www -type d -exec chmod 750 {} \; && \
+    find /var/www -type f -executable -exec chmod 750 {} \; && \
+    find /var/www -type f ! -executable -exec chmod 640 {} \;
+
+
 # 处理 /etc/nginx 的所有者及权限
 RUN chown -R discourse:discourse /etc/nginx && \
     find /etc/nginx -type d   -exec chmod 750 {} \; && \
@@ -91,7 +106,12 @@ DEBIAN_FRONTEND=noninteractive apt-get purge -y \
   pkg-config \
   libtool \
   autoconf \
-  automake && \
+  automake \
+  'gcc*' \
+  'binutils*' \
+  make \
+  flex \
+  mcpp && \
 apt-get autoremove -y && \
 rm -rf /var/lib/apt/lists/*
 
