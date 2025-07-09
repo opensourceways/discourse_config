@@ -132,6 +132,15 @@ run:
         - find /var/www/discourse -type d   -exec chmod 750 {} \;
         - find /var/www/discourse -type f -executable -exec chmod 750 {} \;
         - find /var/www/discourse -type f ! -executable -exec chmod 640 {} \;
+  
+  - exec:
+      hook: fix_home_perms
+      cmd:
+        - chown -R discourse:discourse /home/discourse
+        - chmod 750 /home/discourse
+        - find /home/discourse -type d -exec chmod 750 {} \;
+        - find /home/discourse -type f -exec chmod 640 {} \;
+
 
   - file:
       path: "/etc/nginx/conf.d/outlets/before-server/20-redirect-http-to-https.conf"
