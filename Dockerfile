@@ -92,26 +92,31 @@ RUN apt-get update && \
 
 # 卸载所有构建/调试工具
 RUN apt-get update && \
-DEBIAN_FRONTEND=noninteractive apt-get purge -y \
-  build-essential \
-  cmake \
-  gdb \
-  strace \
-  ltrace \
-  tcpdump \
-  nmap \
-  netcat-openbsd \
-  wireshark-common \
-  wireshark \
-  pkg-config \
-  libtool \
-  autoconf \
-  automake \
-  make \
-  flex \
-  mcpp && \
-apt-get autoremove -y && \
-rm -rf /var/lib/apt/lists/*
+    DEBIAN_FRONTEND=noninteractive apt-get purge -y \
+    build-essential \
+    cmake \
+    make \
+    autoconf \
+    automake \
+    libtool \
+    pkg-config \
+    flex \
+    mcpp \
+    gcc \
+    g++ \
+    cpp \
+    binutils \
+    gdb \
+    strace \
+    ltrace \
+    tcpdump \
+    nmap \
+    netcat-openbsd \
+    wireshark-common \
+    wireshark \
+    rpcbind && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
 
 # 切换到非root用户
 USER discourse
