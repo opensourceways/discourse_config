@@ -111,6 +111,7 @@ hooks:
           - git clone https://github.com/discourse/discourse-solved.git
           - git clone https://github.com/discourse/discourse-gamification.git
           - git clone https://github.com/discourse/discourse-reactions.git
+          - git clone https://github.com/MonDiscourse/discourse-formatting-toolbar.git
           # - git clone https://github.com/discourse/discourse-ai.git
           # - git clone https://github.com/opensourceways/discourse-multilingual.git
 
@@ -123,6 +124,23 @@ run:
         - bash -c "touch -a /shared/log/rails/{sidekiq,puma.err,puma}.log"
         - bash -c "ln -sf /shared/log/rails/{sidekiq,puma.err,puma}.log log/"
         - sed -i 's/default \$scheme;/default https;/' /etc/nginx/conf.d/discourse.conf
+  
+  - exec:
+      hook: fix_www_perms
+      cmd:
+        - chown -R discourse:www-data /var/www/discourse
+        - find /var/www/discourse -type d   -exec chmod 750 {} \;
+        - find /var/www/discourse -type f -executable -exec chmod 750 {} \;
+        - find /var/www/discourse -type f ! -executable -exec chmod 640 {} \;
+  
+  - exec:
+      hook: fix_home_perms
+      cmd:
+        - chown -R discourse:discourse /home/discourse
+        - chmod 750 /home/discourse
+        - find /home/discourse -type d -exec chmod 750 {} \;
+        - find /home/discourse -type f -exec chmod 640 {} \;
+
 
   - file:
       path: "/etc/nginx/conf.d/outlets/before-server/20-redirect-http-to-https.conf"
