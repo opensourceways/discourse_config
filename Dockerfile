@@ -45,6 +45,10 @@ RUN chmod +x /etc/service/unicorn/run && \
 # 修改 nginx 的启动脚本，适配切换到普通用户的修改
 RUN sed -i "s|user www-data;|# user discourse;|g" /etc/nginx/nginx.conf
 
+# 禁用 TLSv1 和 TLSv1.1，仅保留 TLSv1.2+TLSv1.3
+RUN sed -i 's|ssl_protocols .*|ssl_protocols TLSv1.2 TLSv1.3;|' /etc/nginx/nginx.conf && \
+    sed -i 's|ssl_protocols .*|ssl_protocols TLSv1.2 TLSv1.3;|' /etc/nginx/conf.d/discourse.conf
+
 # 修改 discourse 用户shell的umask配置和历史记录设置
 RUN echo "umask 0027" >> /home/discourse/.bashrc && \
     echo "set +o history" >> /home/discourse/.bashrc && \
