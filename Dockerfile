@@ -63,6 +63,10 @@ RUN chage --maxdays 30 discourse && \
 WORKDIR /var/www/discourse
 COPY ./discourse_config/rails /usr/local/bin/rails
 
+# 忽略全零 IP
+RUN sed -i "/def get(ip)/a \\    return nil if ip == '0.0.0.0'  # ignore all-zero IP" \
+    /var/www/discourse/lib/discourse_ip_info.rb
+
 # 修改权限
 RUN chown -R discourse:discourse /etc/runit/1.d && \
     chown -R discourse:discourse /etc/service && \
