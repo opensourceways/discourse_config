@@ -111,9 +111,9 @@ RUN chown -R discourse:discourse /var/www/discourse && \
 
 # 目录权限收紧
 RUN chown -R discourse:discourse /home/discourse && \
-    chmod 550 /home/discourse && \
-    find /home/discourse -type d -exec chmod 550 {} \; && \
-    find /home/discourse -type f -exec chmod 440 {} \;
+    chmod 750 /home/discourse && \
+    find /home/discourse -type d -exec chmod 750 {} \; && \
+    find /home/discourse -type f -exec chmod 640 {} \;
 
 # remove sudo
 RUN apt-get update && \
