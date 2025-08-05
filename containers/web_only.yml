@@ -29,7 +29,7 @@ templates:
 
 params:
   ## Which Git revision should this container use? (default: tests-passed)
-  version: v3.5.0.beta7
+  version:
 
 env:
   LC_ALL: en_US.UTF-8
@@ -106,12 +106,12 @@ hooks:
           - mkdir -p plugins
           - git clone https://github.com/discourse/docker_manager.git
           - git clone https://GIT_USERNAME:GIT_PASSWORD@github.com/opensourceways/discourse-easecheck.git
-          - git clone https://github.com/opensourceways/discourse-oauth2-basic.git -b release
+          # - git clone https://github.com/opensourceways/discourse-oauth2-basic.git -b release
           - git clone https://github.com/opensourceways/discourse-translator.git -b release
-          - git clone https://github.com/discourse/discourse-solved.git
-          - git clone https://github.com/discourse/discourse-gamification.git
-          - git clone https://github.com/discourse/discourse-reactions.git
-          - git clone https://github.com/discourse/discourse-ai.git
+          # - git clone https://github.com/discourse/discourse-solved.git
+          # - git clone https://github.com/discourse/discourse-gamification.git
+          # - git clone https://github.com/discourse/discourse-reactions.git
+          # - git clone https://github.com/discourse/discourse-ai.git
 
 ## Remember, this is YAML syntax - you can only have one block with a name
 run:
