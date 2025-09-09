@@ -147,3 +147,13 @@ run:
         ssl_session_cache shared:SSL:1m;
 
         add_header Strict-Transport-Security 'max-age=31536000';
+
+  - file:
+      path: "/etc/nginx/conf.d/outlets/server/40-proxy.conf"
+      contents: |
+        # Proxy configuration
+        # Example reverse proxy configuration:
+        location /api-dsapi/ {
+            proxy_set_header X-Forwarded-For $http_x_real_ip;
+            proxy_pass https://dsapi.test.osinfra.cn/;
+        }
