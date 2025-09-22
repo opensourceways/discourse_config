@@ -143,7 +143,7 @@ run:
 
         add_header Strict-Transport-Security 'max-age=31536000';
 
-    - file:
+  - file:
       path: "/etc/nginx/conf.d/outlets/server/40-proxy.conf"
       contents: |
         # Proxy configuration
